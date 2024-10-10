@@ -1,4 +1,6 @@
+import { theme } from "antd";
 import type { Config } from "tailwindcss";
+import antThemeConfig from "./consepts/theme";
 
 const config: Config = {
   content: [
@@ -11,6 +13,7 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: antThemeConfig.token?.colorPrimary!
       },
     },
   },

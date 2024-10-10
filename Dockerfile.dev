@@ -4,7 +4,9 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json ./
+# RUN npm install -D @swc/cli @swc/core
 RUN npm i
+
 FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV development
