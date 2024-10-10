@@ -1,11 +1,8 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Dropdown, MenuProps, Tooltip } from "antd";
+import { Avatar, Button, MenuProps, Tooltip } from "antd";
 import DropdownButton from "antd/es/dropdown/dropdown-button";
-import { cookies } from "next/headers";
 import React from "react";
 
 const AccountsList = () => {
-
   // const session = JSON.parse(cookie);
   // console.log(session);
   // const response = await fetch(`${process.env.API}/accounts/user/${}`)
@@ -45,7 +42,7 @@ const AccountsList = () => {
         <Tooltip title="Change Account" key="leftButton">
           {leftButton}
         </Tooltip>,
-        <Button>2</Button>,
+        <Button key="rightButton">2</Button>,
         // React.cloneElement(rightButton as React.ReactElement<any, string>, {
         //   loading: false,
         // }),

@@ -7,7 +7,6 @@ import {
   Input,
   message,
   Spin,
-  Upload,
   Radio,
   Typography,
   FormInstance,
@@ -19,6 +18,7 @@ import { MessageInstance } from "antd/es/message/interface";
 import FormItem from "antd/es/form/FormItem";
 import useQuizImages from "@/lib/store/quizImagsStore";
 import { UploadFile } from "antd/lib";
+import useQuiz from "@/lib/store/useQuiz";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -37,8 +37,10 @@ const CreateQuizForm = () => {
   const [options, setOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { setQuizFormdData } = useQuiz();
+
   const [messageApi, contextHolder] = message.useMessage();
-  const { questionImage, answerImage } = useQuizImages();
+  // const { questionImage, answerImage } = useQuizImages();
   const [form] = Form.useForm<ICreateQuizForm>();
 
   const handleAddOption = () => {
@@ -60,10 +62,37 @@ const CreateQuizForm = () => {
   const handleSubmit = (values: ICreateQuizForm) => {
     setLoading(true);
     const { option, ...restValues } = values;
-    const data = {...restValues, options}
-    //todo: create form data
+    const {
+      answer,
+      answerImage,
+      description,
+      questionImage,
+      questionText,
+      title,
+    } = { ...restValues };
+
+    const questionImageFile = new File([], questionImage.name, {
+      type: questionImage.type,
+      lastModified: questionImage.lastModified,
+    });
+
+    const answerImageFile = new File([], answerImage.name, {
+      type: answerImage.type,
+      lastModified: answerImage.lastModified,
+    });
+    //create formData
     const formData = new FormData();
-    //todo: store in store
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("answer", answer);
+    formData.append("options", options.join(","));
+    formData.append("questionText", questionText);
+    formData.append("title", title);
+    formData.append("questionImage", questionImageFile);
+    formData.append("answerImage", answerImageFile);
+
+    //store in store
+    setQuizFormdData(formData);
     setLoading(false);
   };
 
@@ -126,7 +155,7 @@ const CreateQuizForm = () => {
         <FormItem>
           <Spin spinning={loading}>
             <Button type="primary" htmlType="submit" className="w-full">
-              {loading ? "Submitting" : "Submit"}
+              {loading ? "Done" : "Done"}
             </Button>
           </Spin>
         </FormItem>

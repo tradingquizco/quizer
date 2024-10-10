@@ -114,6 +114,7 @@ const UploadImage = ({ messageApi, type, form }: IUploadImage) => {
             onVisibleChange: (visible) => setPreviewOpen(visible),
             afterOpenChange: (visible) => !visible && setPreviewImage(""),
           }}
+          alt={`${type}-image`}
           src={previewImage}
         />
       )}

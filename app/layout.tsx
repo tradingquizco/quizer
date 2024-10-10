@@ -1,24 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import { ConfigProvider, Layout, Menu, theme } from "antd";
-import antThemeConfig from "@/consepts/theme";
-import { Content } from "antd/es/layout/layout";
-import Sider from "antd/es/layout/Sider";
 import LayoutProvider from "@/providers/LayoutProvider";
 import Head from "next/head";
-import Header from "@/components/header";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata: Metadata = {
   title: "Create Quiz",
@@ -43,9 +26,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </Head>
-      <body
-      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <LayoutProvider>{children}</LayoutProvider>
       </body>
     </html>

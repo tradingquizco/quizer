@@ -10,7 +10,7 @@ import LoginForm from "@/components/loginForm";
 
 const Login = () => {
   const {
-    "1": { borderRadiusLG, colorBgBase, colorBgContainer },
+    "1": { borderRadiusLG, colorBgBase },
   } = useToken();
   return (
     <Layout

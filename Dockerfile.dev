@@ -17,6 +17,7 @@ RUN if ! id "nextjs" &>/dev/null; then \
   fi
 
 COPY --from=deps /app/node_modules ./node_modules
+COPY ./public /app/public
 COPY . .
 
 RUN chown -R nextjs:nodejs /app

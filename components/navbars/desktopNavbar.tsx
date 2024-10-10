@@ -38,7 +38,7 @@ const DesktopNavbar = () => {
         </div>
         <ul className="flex items-center justify-center gap-2">
           {navLinks.map(({ name, path, icon}) => (
-            <li className={`hover:text-${colorPrimary} cursor-pointer`}>
+            <li className={`hover:text-${colorPrimary} cursor-pointer`} key={path}>
               <Link href={path}>
                 <Text
                   type="secondary"

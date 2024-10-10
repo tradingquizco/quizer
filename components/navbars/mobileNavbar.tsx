@@ -57,7 +57,7 @@ const MobileNavbar: React.FC = () => {
         <div className="w-full flex items-center justify-between flex-col h-full">
           <ul className="flex items-center justify-center gap-3 flex-col w-full">
             {navLinks.map(({ name, path, icon }) => (
-              <li className="w-full">
+              <li className="w-full" key={path}>
                 <Link href={path} className="w-full flex">
                   <Text
                     type="secondary"
