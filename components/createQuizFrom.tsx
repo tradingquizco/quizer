@@ -65,6 +65,7 @@ const CreateQuizForm = ({ messageApi }: { messageApi: MessageInstance }) => {
   };
 
   const handleSubmit = (values: ICreateQuizForm) => {
+    console.log(packId)
     if (!questionImage)
       return messageApi.error("Please Provide Question Image");
     if (!answerImage) return messageApi.error("Please Provide Answer Image");

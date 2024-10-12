@@ -7,7 +7,7 @@ import CreateQuizForm from "@/components/createQuizFrom";
 const page = () => {
   const [messageApi, messageContext] = message.useMessage();
   return (
-    <Layout className="" style={{ backgroundColor: "#fff" }}>
+    <Layout style={{ backgroundColor: "#fff" }}>
       {messageContext}
       <CreateQuizForm messageApi={messageApi}/>
     </Layout>

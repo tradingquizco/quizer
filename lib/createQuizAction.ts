@@ -55,7 +55,7 @@ const CreateQuizAction = async ({
       body: formData,
     });
 
-    console.log(response);
+    console.log(await response.json());
     if (!response.ok) {
       const { message } = await response.json();
       return { isError: true, message };

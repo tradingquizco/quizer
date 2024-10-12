@@ -12,6 +12,7 @@ import { FormInstance } from "antd/lib";
 import { ICreateQuizForm } from "./createQuizFrom";
 import CreatePackForm, { ICreatePack } from "./createPackForm";
 import usePack from "@/lib/store/usePack";
+import { IForm } from "./editPackForm";
 
 export type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -24,7 +25,7 @@ type CreateQuizType = {
 type CreatePackType = {
   type: "packCover";
   messageApi: MessageInstance;
-  form: FormInstance<ICreatePack>;
+  form: FormInstance<ICreatePack | any>;
 };
 
 const UploadImage = ({

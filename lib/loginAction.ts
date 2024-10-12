@@ -8,8 +8,8 @@ const LoginAction = async (value: {
   email: string;
   password: string;
 }): Promise<LoginActionResult> => {
-  const cookie = (await cookies()).get("session")?.value ?? "";
-  const { currentAccountId, email } = await JSON.parse(cookie);
+  // const cookie = (await cookies()).get("session")?.value ?? "";
+  // const { currentAccountId, email } = await JSON.parse(cookie);
 
   try {
     const response = await fetch(`${process.env.API}/login`, {
@@ -26,23 +26,25 @@ const LoginAction = async (value: {
       const { message } = await response.json();
       return { isError: true, message };
     }
-    const res = await fetch(`${process.env.API}/accounts/validation-account`, {
-      method: "POST",
-      cache: "no-cache",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        accountId: currentAccountId,
-        role: "quizer",
-        email,
-      }),
-    });
-    if (!res.ok) {
-      console.log("account role is not quizer");
-      return { isError: true, message: "Account Role Not Match!" };
-    }
+
     const { url, session } = await response.json();
+
+    // const res = await fetch(`${process.env.API}/accounts/validation-account`, {
+    //   method: "POST",
+    //   cache: "no-cache",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     accountId: session.currentAccountId,
+    //     role: "quizer",
+    //     email: session.email,
+    //   }),
+    // });
+    // if (!res.ok) {
+    //   console.log("account role is not quizer");
+    //   return { isError: true, message: "Account Role Not Match!" };
+    // }
 
     (await cookies()).set("session", session);
     return { isError: false, message: "WellCome!" };

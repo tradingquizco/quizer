@@ -10,52 +10,25 @@ import usePack from "@/lib/store/usePack";
 import clsx from "clsx";
 import Search from "antd/es/input/Search";
 
-interface IPack {
-  id: string;
-  title: string;
-  username: string;
-  quizNumber: number;
-}
-
 const PackBoxes = () => {
-  const [packs, setPacks] = useState<IPack[]>([]);
-  const [searchPackId, setSearchPackId] = useState<string>();
-
   const [loading, startTransition] = useTransition();
-  const [searchLoading, startSearch] = useTransition();
-
-  const { packId, setPackId } = usePack();
-
-  const getAllPacks = () => {
-    startTransition(async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/packs`);
-        const packs = (await response.json()) as IPack[];
-        setPacks(packs);
-      } catch (err) {
-        console.log(err);
-        setPacks([]);
-      }
-    });
-  };
+  const { packId, setPackId, getAllPacks, packs } = usePack();
 
   const searchBaseOnId = (id: string) => {
-    startSearch(() => {
-      if(!id || id.trim() === "") return;
-      const selectedPackId = packs.find((pack) => pack.id == id);
-      setPacks(selectedPackId ? [selectedPackId] : []);
-    });
+    // You can implement searching logic here
   };
 
   useEffect(() => {
-    getAllPacks();
-  }, []);
+    // Fetch packs only once on mount
+    startTransition(() => {
+      getAllPacks();
+    });
+  }, [getAllPacks]);
 
   return (
     <Flex vertical align="center" justify="center" gap={17}>
       <Search
         placeholder="Search Base On PackId"
-        loading={searchLoading}
         onChange={(e) => searchBaseOnId(e.target.value)}
       />
       <Flex
@@ -65,8 +38,8 @@ const PackBoxes = () => {
         gap={15}
         className="h-[350px] overflow-y-auto"
       >
-        {loading && <Spin></Spin>}
-        {!loading && packs.length === 0 && (
+        {loading && <Spin />}
+        {!loading && packs?.length === 0 && (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             imageStyle={{ height: 60 }}
@@ -82,9 +55,11 @@ const PackBoxes = () => {
           </Empty>
         )}
         {!loading &&
+          packs &&
           packs.length > 0 &&
           packs.map((item) => (
             <Content
+              key={item.id}
               className={clsx(
                 "min-w-[150px] max-w-[250px] min-h-[100px] p-2 border-[1px] border-dashed rounded flex items-center justify-center flex-col cursor-pointer transition-colors overflow-hidden",
                 {
