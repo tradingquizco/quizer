@@ -10,15 +10,20 @@ import {
   Radio,
   Typography,
   FormInstance,
+  Flex,
 } from "antd";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { DeleteOutlined } from "@ant-design/icons";
 import UploadImage from "./upload";
 import { MessageInstance } from "antd/es/message/interface";
 import FormItem from "antd/es/form/FormItem";
-import useQuizImages from "@/lib/store/quizImagsStore";
+import useQuizImages from "@/lib/store/useQuizImage";
 import { UploadFile } from "antd/lib";
 import useQuiz from "@/lib/store/useQuiz";
+import { Group } from "antd/es/radio";
+import CreateQuizAction from "@/lib/createQuizAction";
+import PackBoxes from "./PackBoxes";
+import usePack from "@/lib/store/usePack";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -33,14 +38,14 @@ export interface ICreateQuizForm {
   answerImage: UploadFile;
 }
 
-const CreateQuizForm = () => {
+const CreateQuizForm = ({ messageApi }: { messageApi: MessageInstance }) => {
   const [options, setOptions] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const { setQuizFormdData } = useQuiz();
+  const [loading, startTransition] = useTransition();
 
-  const [messageApi, contextHolder] = message.useMessage();
-  // const { questionImage, answerImage } = useQuizImages();
+  const { answerImage, questionImage, setQuestionImage, setAnswerImage } =
+    useQuizImages();
+  const { packId, setPackId } = usePack();
   const [form] = Form.useForm<ICreateQuizForm>();
 
   const handleAddOption = () => {
@@ -60,45 +65,43 @@ const CreateQuizForm = () => {
   };
 
   const handleSubmit = (values: ICreateQuizForm) => {
-    setLoading(true);
-    const { option, ...restValues } = values;
-    const {
-      answer,
-      answerImage,
-      description,
-      questionImage,
-      questionText,
-      title,
-    } = { ...restValues };
+    if (!questionImage)
+      return messageApi.error("Please Provide Question Image");
+    if (!answerImage) return messageApi.error("Please Provide Answer Image");
+    if (!packId) return messageApi.error("Please Add Quiz to Pack");
 
-    const questionImageFile = new File([], questionImage.name, {
-      type: questionImage.type,
-      lastModified: questionImage.lastModified,
+    startTransition(async () => {
+      const { isError, message } = await CreateQuizAction({
+        quizFormData: values,
+        questionImage,
+        answerImage,
+        options,
+        packId
+      });
+
+      if (isError) {
+        messageApi.error(message);
+      } else {
+        messageApi.success(message);
+        setQuestionImage(null);
+        setAnswerImage(null);
+        setPackId(null);
+        setOptions([]);
+        form.resetFields([
+          "answer",
+          "answerImage",
+          "description",
+          "option",
+          "questionImage",
+          "questionText",
+          "title",
+        ]);
+      }
     });
-
-    const answerImageFile = new File([], answerImage.name, {
-      type: answerImage.type,
-      lastModified: answerImage.lastModified,
-    });
-    //create formData
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("answer", answer);
-    formData.append("options", options.join(","));
-    formData.append("questionText", questionText);
-    formData.append("title", title);
-    formData.append("questionImage", questionImageFile);
-    formData.append("answerImage", answerImageFile);
-
-    //store in store
-    setQuizFormdData(formData);
-    setLoading(false);
   };
 
   return (
     <div className="w-full md:w-1/2 flex items-center justify-center mx-auto mt-10 flex-col">
-      {contextHolder}
       <Divider className="!w-3/4">
         <Title>Create Quiz</Title>
       </Divider>
@@ -152,10 +155,22 @@ const CreateQuizForm = () => {
           <TextArea placeholder="Description" maxLength={250} rows={3} />
         </FormItem>
 
+        <FormItem className="w-full">
+          <Divider>
+            <Title level={3}>Choose Pack</Title>
+          </Divider>
+          <PackBoxes />
+        </FormItem>
         <FormItem>
-          <Spin spinning={loading}>
-            <Button type="primary" htmlType="submit" className="w-full">
-              {loading ? "Done" : "Done"}
+          <Spin spinning={loading} className="w-full">
+            <Button
+              type="primary"
+              color="primary"
+              variant="filled"
+              className="w-full"
+              htmlType="submit"
+            >
+              Create Quiz
             </Button>
           </Spin>
         </FormItem>
@@ -184,7 +199,7 @@ const OptionList = ({
     </FormItem>
 
     <FormItem label="Answer" name="answer" rules={[{ required: true }]}>
-      <Radio.Group className="w-full">
+      <Group className="w-full">
         <div className="flex flex-wrap gap-2">
           {options.length > 0 ? (
             options.map((option) => (
@@ -205,7 +220,7 @@ const OptionList = ({
             <Text type="secondary">No Options Added Yet</Text>
           )}
         </div>
-      </Radio.Group>
+      </Group>
     </FormItem>
   </>
 );
@@ -218,10 +233,18 @@ const ImageUploadSection = ({
   form: FormInstance<ICreateQuizForm>;
 }) => (
   <div className="flex justify-between">
-    <FormItem label="Question Image" name="questionImage">
+    <FormItem
+      label="Question Image"
+      name="questionImage"
+      rules={[{ required: true }]}
+    >
       <UploadImage type="question" messageApi={messageApi} form={form} />
     </FormItem>
-    <FormItem label="Answer Image" name="answerImage">
+    <FormItem
+      label="Answer Image"
+      name="answerImage"
+      rules={[{ required: true }]}
+    >
       <UploadImage type="answer" messageApi={messageApi} form={form} />
     </FormItem>
   </div>

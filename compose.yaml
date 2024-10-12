@@ -1,5 +1,5 @@
 services:
-  tradingquiz_db:
+  database:
     image: mysql:9.0.1
     environment:
       MYSQL_ROOT_PASSWORD: 1234
@@ -11,14 +11,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    container_name: tradingquiz_db
+    container_name: database
   backend:
     container_name: backend
     build:
       context: ../../backend
       dockerfile: Dockerfile
     depends_on:
-      tradingquiz_db:
+      database:
         condition: service_healthy
     ports:
       - 8080:8080

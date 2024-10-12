@@ -18,7 +18,7 @@ import { Content, Header } from "antd/es/layout/layout";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
 import LoginAction from "@/lib/loginAction";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import useMessage from "antd/es/message/useMessage";
 import useToken from "antd/es/theme/useToken";
 
@@ -29,6 +29,7 @@ const LoginForm = () => {
 
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const [loading, setLoading] = useState<boolean>(false);
+  const { push } = useRouter();
 
   const onFinish = async (value: { email: string; password: string }) => {
     setLoading(true);
@@ -39,7 +40,7 @@ const LoginForm = () => {
     if (result.isError) {
       setErrorMessage(result.message);
     } else {
-      redirect("/");
+      redirect("/")
     }
   };
 

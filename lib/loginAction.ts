@@ -4,8 +4,13 @@ import { LoginActionResult } from "@/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-const LoginAction = async (value: { email: string; password: string }): Promise<LoginActionResult> => {
-  console.log(value);
+const LoginAction = async (value: {
+  email: string;
+  password: string;
+}): Promise<LoginActionResult> => {
+  const cookie = (await cookies()).get("session")?.value ?? "";
+  const { currentAccountId, email } = await JSON.parse(cookie);
+
   try {
     const response = await fetch(`${process.env.API}/login`, {
       method: "POST",
@@ -16,17 +21,33 @@ const LoginAction = async (value: { email: string; password: string }): Promise<
     });
 
     if (!response.ok) {
-      if(response.status === 404) return {isError: true, message: "Fetch Route Not Found"}
-      const {message} = await response.json();
-      return {isError: true, message}
+      if (response.status === 404)
+        return { isError: true, message: "Fetch Route Not Found" };
+      const { message } = await response.json();
+      return { isError: true, message };
     }
-
+    const res = await fetch(`${process.env.API}/accounts/validation-account`, {
+      method: "POST",
+      cache: "no-cache",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        accountId: currentAccountId,
+        role: "quizer",
+        email,
+      }),
+    });
+    if (!res.ok) {
+      console.log("account role is not quizer");
+      return { isError: true, message: "Account Role Not Match!" };
+    }
     const { url, session } = await response.json();
 
     (await cookies()).set("session", session);
-    return {isError: false, message: "WellCome!"}
+    return { isError: false, message: "WellCome!" };
   } catch (err) {
-    return {isError: true, message: "Faild To Fetch"}
+    return { isError: true, message: "Faild To Fetch" };
   }
 };
 

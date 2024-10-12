@@ -3,9 +3,6 @@ import DropdownButton from "antd/es/dropdown/dropdown-button";
 import React from "react";
 
 const AccountsList = () => {
-  // const session = JSON.parse(cookie);
-  // console.log(session);
-  // const response = await fetch(`${process.env.API}/accounts/user/${}`)
   const items: MenuProps["items"] = [
     {
       label: "mmd-k1234",

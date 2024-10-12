@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import React from "react";
+import CreatePackForm from "@/components/createPackForm";
 import { Layout, message } from "antd";
-import CreateQuizForm from "@/components/createQuizFrom";
+import React from "react";
 
 const page = () => {
   const [messageApi, messageContext] = message.useMessage();
   return (
     <Layout className="" style={{ backgroundColor: "#fff" }}>
       {messageContext}
-      <CreateQuizForm messageApi={messageApi}/>
+      <CreatePackForm messageApi={messageApi} />
     </Layout>
   );
 };

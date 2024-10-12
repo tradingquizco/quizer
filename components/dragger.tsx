@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Image, Upload } from "antd";
 import type { GetProp, UploadFile, UploadProps } from "antd";
@@ -10,37 +10,23 @@ import Text from "antd/lib/typography/Text";
 import useQuizImages from "@/lib/store/useQuizImage";
 import { FormInstance } from "antd/lib";
 import { ICreateQuizForm } from "./createQuizFrom";
-import CreatePackForm, { ICreatePack } from "./createPackForm";
-import usePack from "@/lib/store/usePack";
+import Dragger from "antd/lib/upload/Dragger";
 
 export type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
-type CreateQuizType = {
+interface IUploadImage {
   type: "question" | "answer";
   messageApi: MessageInstance;
-  form: FormInstance<ICreateQuizForm>;
-};
+  form: FormInstance<any>;
+}
 
-type CreatePackType = {
-  type: "packCover";
-  messageApi: MessageInstance;
-  form: FormInstance<ICreatePack>;
-};
-
-const UploadImage = ({
-  messageApi,
-  type,
-  form,
-}: CreatePackType | CreateQuizType) => {
+const DraggerImage = ({ messageApi, type, form }: IUploadImage) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [error, setError] = useState<string>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const ref = useRef<UploadFile<any>>();
 
-  const { setQuestionImage, setAnswerImage, questionImage, answerImage } =
-    useQuizImages();
-  const { setPackCover, packCover } = usePack();
+  const { setQuestionImage, setAnswerImage } = useQuizImages();
 
   const beforeUpload = (file: FileType) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
@@ -57,16 +43,13 @@ const UploadImage = ({
       return true;
     }
 
-    if (type === "question") {
-      setQuestionImage(file);
-      form.setFieldValue("questionImage", file);
-    } else if (type === "answer") {
-      setAnswerImage(file);
-      form.setFieldValue("answerImage", file);
-    } else if (type === "packCover") {
-      setPackCover(file);
-      form.setFieldValue("packCover", file);
-    }
+    // if (type === "question") {
+    //   setQuestionImage(file);
+    //   form.setFieldValue("questionImage", file);
+    // } else {
+    //   setAnswerImage(file);
+    //   form.setFieldValue("answerImage", file);
+    // }
     setError("");
 
     return true;
@@ -88,15 +71,13 @@ const UploadImage = ({
   };
 
   const handleRemove = () => {
-    if (type === "question") {
-      setQuestionImage(null);
-      form.resetFields(["questionImage"]);
-    } else if (type === "answer") {
-      setAnswerImage(null);
-      form.resetFields(["answerImage"]);
-    } else if (type === "packCover") {
-      setPackCover(null);
-    }
+    // if (type === "question") {
+    //   setQuestionImage(null);
+    //   form.resetFields(['questionImage']);
+    // } else {
+    //   setAnswerImage(null);
+    //   form.resetFields(['answerImage']);
+    // }
   };
 
   const uploadButton = (
@@ -107,26 +88,13 @@ const UploadImage = ({
   );
 
   useEffect(() => {
-    if (packCover === null && type === "packCover") {
-      setFileList([]);
-      setPreviewImage("");
+    if (fileList.length === 1) {
     }
-
-    if (questionImage === null && type === "question") {
-      setFileList([]);
-      setPreviewImage("");
-    }
-
-    if (answerImage === null && type === "answer") {
-      setFileList([]);
-      setPreviewImage("");
-    }
-  }, [packCover, questionImage, answerImage]);
+  }, [fileList.length]);
 
   return (
     <>
-      <Upload
-        ref={ref}
+      <Dragger
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
@@ -137,7 +105,7 @@ const UploadImage = ({
         accept="image/png, image/jpeg"
       >
         {fileList.length === 0 && uploadButton}
-      </Upload>
+      </Dragger>
       {error && <Text type="danger">{error}</Text>}
       {previewOpen && (
         <Image
@@ -155,4 +123,4 @@ const UploadImage = ({
   );
 };
 
-export default UploadImage;
+export default DraggerImage;
