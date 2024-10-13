@@ -1,12 +1,13 @@
+import { FileType } from "@/components/upload";
 import { UploadFile } from "antd";
 import { create } from "zustand";
 
 interface IUseQuizImages {
-  questionImage: UploadFile | null;
-  answerImage: UploadFile | null;
+  questionImage: FileType | null;
+  answerImage: FileType | null;
 
-  setQuestionImage: (file: UploadFile | null) => void;
-  setAnswerImage: (file: UploadFile | null ) => void;
+  setQuestionImage: (file: FileType | null) => void;
+  setAnswerImage: (file: FileType | null ) => void;
 }
 
 const useQuizImages = create<IUseQuizImages>((set, get) => ({

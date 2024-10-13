@@ -24,6 +24,7 @@ import { Group } from "antd/es/radio";
 import CreateQuizAction from "@/lib/createQuizAction";
 import PackBoxes from "./PackBoxes";
 import usePack from "@/lib/store/usePack";
+import base64ToBlob from "@/lib/helper/base64ToBlob";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -65,19 +66,22 @@ const CreateQuizForm = ({ messageApi }: { messageApi: MessageInstance }) => {
   };
 
   const handleSubmit = (values: ICreateQuizForm) => {
-    console.log(packId)
+    console.log(packId);
     if (!questionImage)
       return messageApi.error("Please Provide Question Image");
     if (!answerImage) return messageApi.error("Please Provide Answer Image");
     if (!packId) return messageApi.error("Please Add Quiz to Pack");
 
     startTransition(async () => {
+      const questionImageFile = await base64ToBlob(questionImage);
+
+      const answerImageFile = await base64ToBlob(answerImage);
       const { isError, message } = await CreateQuizAction({
         quizFormData: values,
-        questionImage,
-        answerImage,
+        questionImageFile,
+        answerImageFile,
         options,
-        packId
+        packId,
       });
 
       if (isError) {

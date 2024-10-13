@@ -26,7 +26,6 @@ services:
       - ../../backend/.env
     volumes:
       - ../../backend/uploads:/app/uploads
-      - /app/node_modules
     develop:
       watch:
         - path: ../../backend/./package.json

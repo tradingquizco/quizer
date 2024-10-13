@@ -13,6 +13,7 @@ import { ICreateQuizForm } from "./createQuizFrom";
 import CreatePackForm, { ICreatePack } from "./createPackForm";
 import usePack from "@/lib/store/usePack";
 import { IForm } from "./editPackForm";
+import base64ToBlob from "@/lib/helper/base64ToBlob";
 
 export type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -90,6 +91,7 @@ const UploadImage = ({
 
   const handleRemove = () => {
     if (type === "question") {
+      console.log(questionImage)
       setQuestionImage(null);
       form.resetFields(["questionImage"]);
     } else if (type === "answer") {

@@ -17,7 +17,7 @@ export const navLinks: { path: string; name: string, icon: ReactNode }[] = [
   { path: "/", name: "dashboard", icon: <DashboardOutlined />},
   { path: "/create-quiz", name: "create quiz", icon: <PlusCircleOutlined /> },
   { path: "/create-pack", name: "create pack", icon: <PlusCircleOutlined /> },
-  { path: "/my-stuff", name: "my stuff", icon: <UnorderedListOutlined />},
+  // { path: "/my-stuff", name: "my stuff", icon: <UnorderedListOutlined />},
 ];
 
 

@@ -1,6 +1,7 @@
 import { UploadFile } from "antd";
 import { create } from "zustand";
 import Cookies from "js-cookie";
+import { FileType } from "@/components/upload";
 export interface IPack {
   id: string;
   title: string;
@@ -9,14 +10,14 @@ export interface IPack {
 }
 interface IUsePack {
   //States
-  packCover: UploadFile | null;
+  packCover: FileType | null;
   packId: string | null;
   packs: IPack[] | null;
   myPacks: any | null;
   isPublic: boolean;
   //Actinos
   setPackId: (id: string | null) => void;
-  setPackCover: (file: UploadFile | null) => void;
+  setPackCover: (file: FileType | null) => void;
   getAllPacks: () => void;
   getMyAccountPack: () => void;
   togglePublic: (packId: string, newValue: boolean) => void;
@@ -45,14 +46,18 @@ const usePack = create<IUsePack>((set, get) => ({
   getMyAccountPack: async () => {
     const cookie = Cookies.get("session") ?? "";
     const { currentAccountId } = JSON.parse(cookie);
-
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API}/packs/${currentAccountId}`
       );
+
+      if(!response.ok) {
+        console.log(response);
+        return;
+      }
       const myPacks = (await response.json()) as any;
       return set(() => ({ myPacks }));
-    } catch (err) {
+    } catch (err: any) {
       console.log("Error while getting Packs: " + err);
       return set(() => ({ myPacks: [] }));
     }
@@ -60,25 +65,25 @@ const usePack = create<IUsePack>((set, get) => ({
 
   isPublic: false,
   togglePublic: async (packId, newValue) => {
-    const body = new FormData();
+    // const body = new FormData();
 
-    body.append("public", `${get().isPublic}`);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API}/packs/update/${packId}`,
-        {
-          method: "PATCH",
-          body,
-        }
-      );
+    // body.append("public", `${get().isPublic}`);
+    // try {
+    //   const response = await fetch(
+    //     `${process.env.NEXT_PUBLIC_API}/packs/update/${packId}`,
+    //     {
+    //       method: "PATCH",
+    //       body,
+    //     }
+    //   );
 
-      if (response.ok) {
-        set(() => ({ isPublic: newValue }));
-      }
-      set(() => ({ isPublic: get().isPublic }));
-    } catch (err) {
-      set(() => ({ isPublic: get().isPublic }));
-    }
+    //   if (response.ok) {
+    //     set(() => ({ isPublic: newValue }));
+    //   }
+    //   set(() => ({ isPublic: get().isPublic }));
+    // } catch (err) {
+    //   set(() => ({ isPublic: get().isPublic }));
+    // }
   },
 }));
 

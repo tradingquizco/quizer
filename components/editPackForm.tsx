@@ -12,6 +12,7 @@ import UploadImage from "./upload";
 import usePack from "@/lib/store/usePack";
 import EditPackAction from "@/lib/editPack";
 import { useRouter } from "next/navigation";
+import base64ToBlob from "@/lib/helper/base64ToBlob";
 
 export interface IForm {
   title: string;
@@ -41,10 +42,16 @@ const EditPackForm = ({ pack }: { pack: IPack }) => {
     }, {} as Partial<IForm>);
 
     startTransition(async () => {
+      let coverPack = null;
+
+      if (packCover) {
+        coverPack = await base64ToBlob(packCover);
+      }
+
       const result = await EditPackAction({
         id: pack.id,
         value: changedFields,
-        packCover,
+        coverPack,
       });
 
       if (result.isError) {

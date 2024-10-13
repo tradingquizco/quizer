@@ -34,7 +34,7 @@ const PacksContainer = () => {
       gap={15}
     >
       <Divider>
-        <Title>Your Packs</Title>
+        <Title>Packs</Title>
       </Divider>
 
       {!loading && myPacks?.length === 0 && (

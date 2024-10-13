@@ -10,6 +10,7 @@ import Meta from "antd/es/card/Meta";
 import React, { useState } from "react";
 import EditPackForm from "./editPackForm";
 import PermistionMenu from "./premisionMenu";
+import { redirect, useRouter } from "next/navigation";
 
 interface IAccount {
   username: string;
@@ -20,12 +21,12 @@ export interface IPack {
   title: string;
   description: string;
   coverImageUrl: string;
-  level: "easy" | "medium" | "hard"; // or string if there are more levels
+  level: "easy" | "medium" | "hard";
   isFree: boolean;
   price: number;
   creatorId: number;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: string;
+  updatedAt: string;
   account: IAccount;
   quizNumber: number;
   username: string;
@@ -35,20 +36,20 @@ export interface IPack {
 const PackCard = ({ pack }: { pack: IPack }) => {
   const [isEditPackOpen, setIsEditPackOpen] = useState<boolean>();
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>();
+
   return (
     <Card
       style={{ width: 300 }}
       cover={
         <img
           alt="example"
-          // src={`http://localhost:8080/${pack.coverImageUrl}`}
-          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+          src={`http://localhost:8080/${pack.coverImageUrl}`}
         />
       }
       actions={[
         <SettingOutlined key="setting" onClick={() => setIsSearchOpen(true)} />,
         <EditOutlined key="edit" onClick={() => setIsEditPackOpen(true)} />,
-        <EllipsisOutlined key="ellipsis" />,
+        <EllipsisOutlined key="ellipsis" onClick={() => redirect(`/pack/${pack.id}`,)}/>,
       ]}
     >
       <Meta
