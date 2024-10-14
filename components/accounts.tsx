@@ -1,6 +1,8 @@
+"use client"
+
 import { Avatar, Button, MenuProps, Tooltip } from "antd";
 import DropdownButton from "antd/es/dropdown/dropdown-button";
-import React from "react";
+import React, { useState } from "react";
 
 const AccountsList = () => {
   const items: MenuProps["items"] = [
@@ -39,10 +41,7 @@ const AccountsList = () => {
         <Tooltip title="Change Account" key="leftButton">
           {leftButton}
         </Tooltip>,
-        <Button key="rightButton">2</Button>,
-        // React.cloneElement(rightButton as React.ReactElement<any, string>, {
-        //   loading: false,
-        // }),
+        <Button key="rightButton">1</Button>,
       ]}
     >
       mohammad-k13

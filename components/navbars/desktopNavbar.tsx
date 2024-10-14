@@ -17,7 +17,6 @@ export const navLinks: { path: string; name: string, icon: ReactNode }[] = [
   { path: "/", name: "dashboard", icon: <DashboardOutlined />},
   { path: "/create-quiz", name: "create quiz", icon: <PlusCircleOutlined /> },
   { path: "/create-pack", name: "create pack", icon: <PlusCircleOutlined /> },
-  // { path: "/my-stuff", name: "my stuff", icon: <UnorderedListOutlined />},
 ];
 
 
@@ -57,8 +56,8 @@ const DesktopNavbar = () => {
       </div>
 
       <div className="flex items-center justify-center gap-3 h-full w-auto">
-          <AccountsList />
-          <Avatar size={45} shape="square" src="https://avatars.githubusercontent.com/u/88265699?v=4"/>
+          {/* <AccountsList />
+          <Avatar size={45} shape="square" src="https://avatars.githubusercontent.com/u/88265699?v=4"/> */}
       </div>
     </nav>
   );
