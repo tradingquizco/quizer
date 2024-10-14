@@ -43,7 +43,7 @@ const PackCard = ({ pack }: { pack: IPack }) => {
       cover={
         <img
           alt="example"
-          src={`http://localhost:8080/${pack.coverImageUrl}`}
+          src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${pack.coverImageUrl}`}
         />
       }
       actions={[

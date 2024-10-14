@@ -69,7 +69,7 @@ const QuizTable = ({
       title: "Question Image",
       dataIndex: "questionImgUrl",
       render: (value) => (
-        <Tooltip title={<Image src={`http://localhost:8080/${value}`} />}>
+        <Tooltip title={<Image src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${value}`} />}>
           Quetion Image
         </Tooltip>
       ),
@@ -78,7 +78,7 @@ const QuizTable = ({
       title: "Answer Image",
       dataIndex: "answerImgUrl",
       render: (value) => (
-        <Tooltip title={<Image src={`http://localhost:8080/${value}`} />}>
+        <Tooltip title={<Image src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${value}`} />}>
           Answer Image
         </Tooltip>
       ),
