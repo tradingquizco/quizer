@@ -10,8 +10,10 @@ import Link from "next/link";
 import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
 import { DashboardFilled, DashboardOutlined, PlusCircleOutlined, UnorderedListOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
+import { Avatar, Button } from "antd";
 import AccountsList from "../accounts";
+import Cookies from "js-cookie";
+
 
 export const navLinks: { path: string; name: string, icon: ReactNode }[] = [
   { path: "/", name: "dashboard", icon: <DashboardOutlined />},
@@ -56,6 +58,7 @@ const DesktopNavbar = () => {
       </div>
 
       <div className="flex items-center justify-center gap-3 h-full w-auto">
+        <Button danger onClick={() => Cookies.remove("session")}>Log Out</Button>
           {/* <AccountsList />
           <Avatar size={45} shape="square" src="https://avatars.githubusercontent.com/u/88265699?v=4"/> */}
       </div>

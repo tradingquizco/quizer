@@ -7,17 +7,12 @@ import { ActionResultType } from "./createQuizAction";
 
 const CreatePackAction = async (
   data: ICreatePack,
-  packCover: UploadFile
+  packCover: Blob
 ): Promise<ActionResultType> => {
   const { description, isFree, level, title } = data;
   const cookie = (await cookies()).get("session")?.value ?? "";
 
   const { currentAccountId, email } = await JSON.parse(cookie);
-
-  const coverFile = new File([], packCover.name, {
-    type: packCover?.type,
-    lastModified: packCover?.lastModified,
-  });
 
   const formData = new FormData();
   formData.append("title", title);
@@ -25,7 +20,7 @@ const CreatePackAction = async (
   formData.append("isFree", isFree.toString());
   formData.append("level", level);
   formData.append("price", "0");
-  formData.append("coverPack", coverFile);
+  formData.append("coverPack", packCover);
   formData.append("creatorId", currentAccountId);
 
   try {

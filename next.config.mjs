@@ -7,6 +7,18 @@ const nextConfig = {
       bodySizeLimit: '10mb', // Adjust the limit as per your needs
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "images.tradingquiz.site",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

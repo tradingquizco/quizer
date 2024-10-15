@@ -14,6 +14,7 @@ import UploadImage from "./upload";
 import { UploadFile } from "antd/lib";
 import usePack from "@/lib/store/usePack";
 import CreatePackAction from "@/lib/createPackAction";
+import base64ToBlob from "@/lib/helper/base64ToBlob";
 
 export interface ICreatePack {
   title: string;
@@ -31,11 +32,13 @@ const CreatePackForm = ({ messageApi }: { messageApi: MessageInstance }) => {
   const { packCover, setPackCover } = usePack();
   const [form] = useForm<ICreatePack>();
 
-  const handleSubmit = (data: ICreatePack) => {
+  const handleSubmit = async (data: ICreatePack) => {
     if (!packCover) return messageApi.error("Please Provider Cover For Pack");
 
+    const packCoverBlob = await base64ToBlob(packCover);
+
     startTransition(async () => {
-      const { isError, message } = await CreatePackAction(data, packCover);
+      const { isError, message } = await CreatePackAction(data, packCoverBlob);
       if (isError) {
         messageApi.error(message);
       } else {

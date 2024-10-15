@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import EditPackForm from "./editPackForm";
 import PermistionMenu from "./premisionMenu";
 import { redirect, useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface IAccount {
   username: string;
@@ -42,8 +43,10 @@ const PackCard = ({ pack }: { pack: IPack }) => {
       style={{ width: 300 }}
       cover={
         <img
-          alt="example"
+          alt="cover-pack"
           src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${pack.coverImageUrl}`}
+          width={300}
+          height={300}
         />
       }
       actions={[
