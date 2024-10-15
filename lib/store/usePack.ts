@@ -48,7 +48,7 @@ const usePack = create<IUsePack>((set, get) => ({
     const { currentAccountId } = JSON.parse(cookie);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API}/packs/${currentAccountId}`
+        `${process.env.NEXT_PUBLIC_API}/packs`
       );
 
       if(!response.ok) {

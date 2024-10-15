@@ -21,8 +21,6 @@ const CreateQuizAction = async ({
   answerImageFile: Blob;
   packId: string;
 }): Promise<ActionResultType> => {
-  let result: ActionResultType = { isError: false, message: "" };
-
   try {
   const cookie = (await cookies()).get("session")?.value ?? "";
   const { currentAccountId } = JSON.parse(cookie);
@@ -48,7 +46,6 @@ const CreateQuizAction = async ({
       body: formData,
     });
 
-    console.log(await response.json());
     if (!response.ok) {
       const { message } = await response.json();
       return { isError: true, message };

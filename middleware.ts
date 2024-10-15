@@ -11,7 +11,6 @@ export default async function middleware(req: NextRequest) {
   if (!cookie) return NextResponse.redirect(new URL("/login", req.url));
 
   const { currentAccountId, email } = await JSON.parse(cookie);
-  console.log(currentAccountId);
   try {
     const response = await fetch(
       `${process.env.API}/accounts/validation-account`,
