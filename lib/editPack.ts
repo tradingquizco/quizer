@@ -31,14 +31,11 @@ const EditPackAction = async ({
       body,
     });
 
-    console.error("responze");
-    console.log(response);
     if (!response.ok) {
       const { message } = await response.json();
       return { isError: true, message };
     }
 
-    revalidatePath("/my-stuff");
     return { isError: false, message: "Changes Was Saved!" };
   } catch (err) {
     console.log(err);

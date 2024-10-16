@@ -19,7 +19,6 @@ const CreatePackAction = async (
   formData.append("description", description);
   formData.append("isFree", `${isFree}`);
   formData.append("level", level);
-  formData.append("price", "0");
   formData.append("coverPack", packCover);
   formData.append("category", category);
   formData.append("creatorId", currentAccountId);

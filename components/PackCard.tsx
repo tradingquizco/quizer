@@ -3,9 +3,10 @@
 import {
   EditOutlined,
   EllipsisOutlined,
+  InfoCircleOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Drawer, Flex } from "antd";
+import { Avatar, Card, Drawer, Dropdown, Flex } from "antd";
 import Meta from "antd/es/card/Meta";
 import React, { useState } from "react";
 import EditPackForm from "./editPackForm";
@@ -13,6 +14,7 @@ import PermistionMenu from "./premisionMenu";
 import { redirect, useRouter } from "next/navigation";
 import Image from "next/image";
 import Text from "antd/es/typography/Text";
+import PackInformation from "./PackInformation";
 
 interface IAccount {
   username: string;
@@ -39,6 +41,7 @@ export interface IPack {
 const PackCard = ({ pack }: { pack: IPack }) => {
   const [isEditPackOpen, setIsEditPackOpen] = useState<boolean>();
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>();
+  const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
 
   return (
     <Card
@@ -47,13 +50,13 @@ const PackCard = ({ pack }: { pack: IPack }) => {
         <img
           alt="cover-pack"
           src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${pack.coverImageUrl}`}
-          width={300}
-          height={300}
+          className="w-[300px] h-[300px] object-cover"
         />
       }
       actions={[
         <SettingOutlined key="setting" onClick={() => setIsSearchOpen(true)} />,
         <EditOutlined key="edit" onClick={() => setIsEditPackOpen(true)} />,
+        <InfoCircleOutlined key="more" onClick={() => setIsDetailOpen(true)} />,
         <EllipsisOutlined
           key="ellipsis"
           onClick={() => redirect(`/pack/${pack.id}`)}
@@ -66,31 +69,42 @@ const PackCard = ({ pack }: { pack: IPack }) => {
         }
         title={pack.title}
         description={
-          <Flex vertical className="text-sm w-full">
-            <Text type="secondary">
-              <span className="text-primary">Creator</span> - {pack.username}
-            </Text>
-            <Text type="secondary">
-              <span className="text-primary">Category</span> - {pack.category}
-            </Text>
+          <Text type="secondary">
+            <span className="text-primary">Creator</span> - {pack.username}
+          </Text>
+          // <Flex vertical className="text-sm w-full">
 
-            <Flex gap={10}>
-              <Text type="secondary">
-                <span className="text-primary">Level</span> - {pack.level}
-              </Text>
-              <Text type="secondary">
-                <span className="text-primary">Quizzes</span> -{" "}
-                {pack.quizNumber}
-              </Text>
-            </Flex>
-            <Text type="secondary">
-              <span className="text-primary">isFree</span> -{" "}
-              {pack.isFree ? "yes" : "no"}
-            </Text>
-          </Flex>
+          //   <Text type="secondary">
+          //     <span className="text-primary">Category</span> - {pack.category}
+          //   </Text>
+
+          //   <Flex gap={10}>
+          //     <Text type="secondary">
+          //       <span className="text-primary">Level</span> - {pack.level}
+          //     </Text>
+          //     <Text type="secondary">
+          //       <span className="text-primary">Quizzes</span> -{" "}
+          //       {pack.quizNumber}
+          //     </Text>
+          //   </Flex>
+          //   <Text type="secondary">
+          //     <span className="text-primary">isFree</span> -{" "}
+          //     {pack.isFree ? "yes" : "no"}
+          //   </Text>
+          //   <Text type="secondary">
+          //     <span className="text-primary">Price</span> -{" "}
+          //     {pack.price}
+          //   </Text>
+          // </Flex>
         }
       />
-
+      <Drawer
+        title="More Information"
+        open={isDetailOpen}
+        onClose={() => setIsDetailOpen(false)}
+      >
+        <PackInformation pack={pack}/>
+      </Drawer>
       <Drawer
         title="Edit Pack"
         onClose={() => setIsEditPackOpen(false)}
