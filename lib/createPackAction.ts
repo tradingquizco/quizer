@@ -9,18 +9,19 @@ const CreatePackAction = async (
   data: ICreatePack,
   packCover: Blob
 ): Promise<ActionResultType> => {
-  const { description, isFree, level, title } = data;
+  const { description, isFree, level, title, category } = data;
   const cookie = (await cookies()).get("session")?.value ?? "";
 
-  const { currentAccountId, email } = await JSON.parse(cookie);
+  const { currentAccountId } = await JSON.parse(cookie);
 
   const formData = new FormData();
   formData.append("title", title);
   formData.append("description", description);
-  formData.append("isFree", isFree.toString());
+  formData.append("isFree", `${isFree}`);
   formData.append("level", level);
   formData.append("price", "0");
   formData.append("coverPack", packCover);
+  formData.append("category", category);
   formData.append("creatorId", currentAccountId);
 
   try {

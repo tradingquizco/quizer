@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { IPack } from "./PackCard";
 import { useForm } from "antd/es/form/Form";
-import { Button, Form, Input, message, Spin, Switch } from "antd";
+import { Button, Form, Input, message, Select, Spin, Switch } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import TextArea from "antd/es/input/TextArea";
 import { Group } from "antd/lib/radio";
@@ -19,7 +19,8 @@ export interface IForm {
   description: string;
   level: string;
   price: number;
-  isFree: string | boolean;
+  isFree: boolean;
+  category: string,
 }
 
 const EditPackForm = ({ pack }: { pack: IPack }) => {
@@ -71,11 +72,12 @@ const EditPackForm = ({ pack }: { pack: IPack }) => {
       isFree: pack.isFree,
       level: pack.level,
       price: pack.price,
+      category: pack.category
     };
 
     form.setFieldsValue(initialFormValues);
-    setInitialValues(initialFormValues); // Save initial values when component mounts
-  }, [pack, form]);
+    setInitialValues(initialFormValues);
+  }, []);
 
   return (
     <>
@@ -91,7 +93,7 @@ const EditPackForm = ({ pack }: { pack: IPack }) => {
         <FormItem
           label="Title"
           name="title"
-          rules={[{ required: true, message: "Title is required", min: 3 }]}
+          rules={[{ message: "Title is required", min: 3 }]}
         >
           <Input placeholder="Title" />
         </FormItem>
@@ -100,23 +102,31 @@ const EditPackForm = ({ pack }: { pack: IPack }) => {
           label="Description"
           name="description"
           rules={[
-            { required: true, message: "Description is required", min: 3 },
+            { message: "Description is required", min: 3 },
           ]}
         >
           <TextArea placeholder="Description" maxLength={250} rows={3} />
         </FormItem>
-        <FormItem
-          label="Level Of Pack"
-          name="level"
-          rules={[{ required: true }]}
-        >
-          <Group>
-            <Radio value={"easy"}>Easy</Radio>
-            <Radio value={"medium"}>Medium</Radio>
-            <Radio value={"hard"}>Hard</Radio>
-          </Group>
-        </FormItem>
-        <FormItem label="Free" name="isFree" rules={[{ required: true }]}>
+        <FormItem label="Level Of Pack" name="level" className="flex-1">
+            <Select
+              defaultValue="Easy"
+              options={[
+                { value: "easy", label: "Easy" },
+                { value: "medium", label: "Medium" },
+                { value: "hard", label: "Hard" },
+              ]}
+            />
+          </FormItem>
+          <FormItem label="Category" name="category" className="flex-1">
+            <Select
+              defaultValue="Technical Analysis"
+              options={[
+                { value: "Technical Analysis", label: "Technical Analysis" },
+                { value: "Smart Money", label: "Smart Money" },
+              ]}
+            />
+          </FormItem>
+        <FormItem label="Free" name="isFree">
           <Switch />
         </FormItem>
         <FormItem label="Pack Cover" name="cover">
