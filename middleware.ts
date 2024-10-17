@@ -7,13 +7,16 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const cookie = (await cookies()).get("session")?.value;
-  if (!cookie) return NextResponse.redirect(new URL("/login", req.url));
+  const sessionToken = (await cookies()).get("sessionToken")?.value;
+  const sessionId = (await cookies()).get("sessionId")?.value
+  if (!sessionId || !sessionToken)
+    return NextResponse.redirect(
+      new URL(process.env.LOGIN_URL!.toString(), req.url)
+    );
 
-  const { currentAccountId, email } = await JSON.parse(cookie);
   try {
     const response = await fetch(
-      `${process.env.API}/accounts/validation-account`,
+      `${process.env.API}/sessionValidation`,
       {
         method: "POST",
         cache: "no-cache",
@@ -21,15 +24,16 @@ export default async function middleware(req: NextRequest) {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          accountId: currentAccountId,
+          sessionToken,
+          sessionId,
           role: "quizer",
-          email,
         }),
       }
     );
     if (!response.ok) {
-      console.log("account role is not quizer");
-      return NextResponse.redirect(new URL("/login", req.url));
+      return NextResponse.redirect(
+        new URL(process.env.LOGIN_URL!.toString(), req.url)
+      );
     }
   } catch (err) {
     console.log(err);

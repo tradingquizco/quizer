@@ -1,13 +1,7 @@
 import React from "react";
 import { IPack } from "./PackCard";
-import { Button, Flex } from "antd";
+import { Flex } from "antd";
 import Text from "antd/lib/typography/Text";
-import Title from "antd/es/typography/Title";
-import {
-  InfoCircleFilled,
-  InfoCircleOutlined,
-  InfoCircleTwoTone,
-} from "@ant-design/icons";
 
 const PackInformation = ({ pack }: { pack: IPack }) => {
   return (
