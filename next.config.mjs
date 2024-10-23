@@ -17,6 +17,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.tradingquiz.site",
       },
+      {
+        protocol: "https",
+        hostname: "api.dicebear.com",
+      },
     ],
   },
 };

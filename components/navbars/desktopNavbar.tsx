@@ -58,7 +58,7 @@ const DesktopNavbar = () => {
       </div>
 
       <div className="flex items-center justify-center gap-3 h-full w-auto">
-        <Button danger onClick={() => Cookies.remove("session")}>Log Out</Button>
+        <Button danger onClick={() => {Cookies.remove("sessionToken"); Cookies.remove("sessionId")}}>Log Out</Button>
           {/* <AccountsList />
           <Avatar size={45} shape="square" src="https://avatars.githubusercontent.com/u/88265699?v=4"/> */}
       </div>
