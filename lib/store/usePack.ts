@@ -44,7 +44,6 @@ const usePack = create<IUsePack>((set, get) => ({
 
   myPacks: null,
   getMyAccountPack: async () => {
-    const cookie = Cookies.get("session") ?? "";
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API}/packs`

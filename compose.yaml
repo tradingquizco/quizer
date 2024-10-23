@@ -57,5 +57,27 @@ services:
         - path: .
           target: /app
           action: sync
+  main:
+    container_name: main
+    build:
+      context: ../main
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    volumes:
+      - /app/node_modules
+    env_file:
+      - ../main/.env.development
+    depends_on:
+      - backend
+    develop:
+      watch:
+        - path: ../main/package.json
+          action: rebuild
+        - path: ../main/package-lock.json
+          action: rebuild
+        - path: ../main
+          target: /app
+          action: sync
 volumes:
   mysql_volumn:

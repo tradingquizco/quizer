@@ -10,9 +10,7 @@ const CreatePackAction = async (
   packCover: Blob
 ): Promise<ActionResultType> => {
   const { description, isFree, level, title, category } = data;
-  const cookie = (await cookies()).get("session")?.value ?? "";
-
-  const { currentAccountId } = await JSON.parse(cookie);
+  const sessionId = (await cookies()).get("sessionId")?.value ?? "";
 
   const formData = new FormData();
   formData.append("title", title);
@@ -21,7 +19,7 @@ const CreatePackAction = async (
   formData.append("level", level);
   formData.append("coverPack", packCover);
   formData.append("category", category);
-  formData.append("creatorId", currentAccountId);
+  formData.append("sessionId", sessionId);
 
   try {
     const response = await fetch(`${process.env.API}/packs`, {

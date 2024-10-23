@@ -22,8 +22,7 @@ const CreateQuizAction = async ({
   packId: string;
 }): Promise<ActionResultType> => {
   try {
-  const cookie = (await cookies()).get("session")?.value ?? "";
-  const { currentAccountId } = JSON.parse(cookie);
+  const sessionId = (await cookies()).get("sessionId")?.value ?? "";
 
   const { option, ...restValues } = quizFormData;
   const { answer, description, questionText, title } = { ...restValues };
@@ -38,7 +37,7 @@ const CreateQuizAction = async ({
   formData.append("questionImage", questionImageFile);
   formData.append("answerImage", answerImageFile);
   formData.append("packId", packId);
-  formData.append("creatorId", currentAccountId);
+  formData.append("sessionId", sessionId);
 
     const response = await fetch(`${process.env.API}/quizzes`, {
       method: "POST",
