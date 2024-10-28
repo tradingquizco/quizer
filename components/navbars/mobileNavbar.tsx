@@ -9,6 +9,7 @@ import { navLinks } from "./desktopNavbar";
 import Link from "next/link";
 import clsx from "clsx";
 import AccountsList from "../accounts";
+import Cookies from "js-cookie";
 
 const MobileNavbar: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -73,7 +74,7 @@ const MobileNavbar: React.FC = () => {
             ))}
           </ul>
 
-          <div className="w-full">
+          {/* <div className="w-full">
             <Divider>
               <Text type="secondary">Accounts</Text>
             </Divider>
@@ -104,7 +105,16 @@ const MobileNavbar: React.FC = () => {
                 <Text type="secondary">mohammad@gmail.com</Text>
               </div>
             </div>
-          </div>
+          </div> */}
+           <Button
+            danger
+            onClick={() => {
+              Cookies.remove("sessionToken");
+              Cookies.remove("sessionId");
+            }}
+          >
+            Log Out
+          </Button>
         </div>
       </Drawer>
     </nav>
