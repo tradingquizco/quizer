@@ -84,6 +84,8 @@ const QuizTable = ({
       ),
     },
     { title: "PackID", dataIndex: "packId", key: "packId" },
+    { title: "Description", dataIndex: "description", key: "description" },
+    { title: "Answer", dataIndex: "answer", key: "answer" },
     {
       title: "Action",
       width: 20,
