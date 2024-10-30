@@ -25,7 +25,7 @@ const EditQuizAction = async ({
     body.append(key, val as string);
   });
   body.append("options", options.join(","));
-  body.append('answer', answer)
+  // body.append('answer', answer)
 
   if (questionBlob) {
     body.append("questionImage", questionBlob);
